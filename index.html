@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刷刷鴨的火鍋世界</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fbeee0;
+            margin: 0;
+            padding: 0;
+        }
+        header, footer {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: #fff;
+            border-bottom: 1px solid #ccc;
+        }
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .container h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .options {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .options div {
+            background: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .options div:hover {
+            background: #e0e0e0;
+        }
+        .start-button {
+            display: inline-block;
+            background-color: #ff4d4d;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .start-button:hover {
+            background-color: #ff3333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>💰 50</div>
+        <div>📅 0天</div>
+        <div>🏆 ??分</div>
+    </header>
+    <div class="container">
+        <img src="duck.png" alt="刷刷鴨" width="120">
+        <h1>歡迎來到刷刷鴨的火鍋世界！準備好挑戰新考題了嗎？</h1>
+        <div class="options">
+            <div>隨機</div>
+            <div>自選</div>
+            <div>個人化</div>
+        </div>
+        <p>從題庫中隨機選題 測試自己的綜合能力</p>
+        <a class="start-button" href="./start.html">開始刷題</a>
+    </div>
+    <footer>
+        <div>📝 刷題</div>
+        <div>📚 模擬考</div>
+        <div>❌ 錯題本</div>
+        <div>🔤 文法</div>
+        <div>➕ 更多</div>
+    </footer>
+</body>
+</html>
