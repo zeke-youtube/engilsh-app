@@ -1,86 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>50 Question Quiz</title>
+  <meta charset="UTF-8">
+  <title>ELA Quiz</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-    #question { font-size: 1.5em; margin-bottom: 20px; }
-    .option { display: block; margin: 10px 0; padding: 10px; font-size: 1em; cursor: pointer; background-color: #f0f0f0; border: none; }
-    #nextBtn { padding: 10px 20px; font-size: 1em; margin-top: 20px; }
-    #score { font-size: 1.2em; margin-top: 20px; }
+    body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2em; }
+    .question-box { margin-bottom: 2em; }
+    .score-box { font-weight: bold; margin-top: 2em; }
+    button { margin-top: 1em; }
   </style>
 </head>
 <body>
-  <h1>Quiz Challenge</h1>
-  <div id="question">Loading question...</div>
-  <div id="options"></div>
-  <button id="nextBtn" disabled>Next Question</button>
-  <div id="score">Score: 0</div>
+  <h1>ELA Quiz</h1>
+  <div id="quiz"></div>
+  <div class="score-box" id="scoreBox"></div>
 
   <script>
     const questions = [
       {
-        question: "What is the capital of France?",
-        choices: ["Berlin", "Paris", "Madrid", "Rome"],
-        answer: "Paris"
+        question: "Which word is a synonym for 'happy'?",
+        answers: ["Joyful", "Angry", "Tired", "Hungry"],
+        correct: 0,
+        explanation: "‘Joyful’ means showing happiness — it’s a synonym for ‘happy.’"
       },
       {
-        question: "Who wrote 'Romeo and Juliet'?",
-        choices: ["William Shakespeare", "Mark Twain", "Jane Austen", "Charles Dickens"],
-        answer: "William Shakespeare"
+        question: "What is the past tense of 'run'?",
+        answers: ["Running", "Ran", "Runned", "Runs"],
+        correct: 1,
+        explanation: "‘Ran’ is the correct past tense form of ‘run.’"
       },
       {
-        question: "What’s the smallest planet in our solar system?",
-        choices: ["Mercury", "Venus", "Mars", "Earth"],
-        answer: "Mercury"
-      },
-      {
-        question: "How many continents are there?",
-        choices: ["5", "6", "7", "8"],
-        answer: "7"
-      },
-      {
-        question: "What element does 'O' represent on the periodic table?",
-        choices: ["Osmium", "Oxygen", "Gold", "Iron"],
-        answer: "Oxygen"
+        question: "Which sentence uses proper punctuation?",
+        answers: [
+          "Lets go to the park",
+          "Let's go to the park!",
+          "Lets go to the park!",
+          "Let’s go, to the park"
+        ],
+        correct: 1,
+        explanation: "‘Let's go to the park!’ uses the correct contraction and punctuation."
       }
-      // ➕ You can add more questions following this format!
     ];
 
-    let remaining = [...questions];
+    let current = 0;
     let score = 0;
 
-    function loadQuestion() {
-      document.getElementById("nextBtn").disabled = true;
-      document.getElementById("options").innerHTML = "";
-
-      if (remaining.length === 0) {
-        document.getElementById("question").textContent = "Quiz Complete!";
-        document.getElementById("score").textContent = `Final Score: ${score}`;
-        return;
-      }
-
-      const index = Math.floor(Math.random() * remaining.length);
-      const current = remaining.splice(index, 1)[0];
-      document.getElementById("question").textContent = current.question;
-
-      current.choices.forEach(choice => {
-        const btn = document.createElement("button");
-        btn.className = "option";
-        btn.textContent = choice;
-        btn.onclick = () => {
-          if (choice === current.answer) score++;
-          document.getElementById("score").textContent = `Score: ${score}`;
-          document.querySelectorAll(".option").forEach(b => b.disabled = true);
-          document.getElementById("nextBtn").disabled = false;
-        };
-        document.getElementById("options").appendChild(btn);
-      });
+    function shuffle(array) {
+      return array
+        .map(val => ({val, sort: Math.random()}))
+        .sort((a, b) => a.sort - b.sort)
+        .map(obj => obj.val);
     }
 
-    document.getElementById("nextBtn").addEventListener("click", loadQuestion);
-    loadQuestion(); // Load first question
+    function showQuestion() {
+      const q = questions[current];
+      const quiz = document.getElementById("quiz");
+      quiz.innerHTML = "";
+
+      const container = document.createElement("div");
+      container.className = "question-box";
+
+      const questionEl = document.createElement("p");
+      questionEl.textContent = q.question;
+      container.appendChild(questionEl);
+
+      const shuffledAnswers = shuffle(q.answers.map((a, i) => ({text: a, index: i})));
+
+      shuffledAnswers.forEach(ans => {
+        const btn = document.createElement("button");
+        btn.textContent = ans.text;
+        btn.onclick = () => {
+          if (ans.index === q.correct) score++;
+          container.innerHTML += `<p><strong>${ans.index === q.correct ? "Correct!" : "Incorrect."}</strong> ${q.explanation}</p>`;
+          current++;
+          if (current < questions.length) {
+            setTimeout(showQuestion, 1500);
+          } else {
+            document.getElementById("scoreBox").textContent = `You scored ${score} out of ${questions.length}.`;
+          }
+        };
+        container.appendChild(btn);
+      });
+
+      quiz.appendChild(container);
+    }
+
+    showQuestion();
   </script>
 </body>
 </html>
