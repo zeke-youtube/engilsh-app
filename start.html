@@ -4,10 +4,28 @@
   <meta charset="UTF-8">
   <title>ELA Quiz</title>
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2em; }
-    .question-box { margin-bottom: 2em; }
-    .score-box { font-weight: bold; margin-top: 2em; }
-    button { margin-top: 1em; }
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 2em;
+    }
+    .question-box {
+      margin-bottom: 2em;
+    }
+    .score-box {
+      font-weight: bold;
+      margin-top: 2em;
+    }
+    button {
+      margin-top: 1em;
+      padding: 1em 2em;
+      font-size: 1.1em;
+      background-color: yellow;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -77,6 +95,9 @@
             setTimeout(showQuestion, 1500);
           } else {
             document.getElementById("scoreBox").textContent = `You scored ${score} out of ${questions.length}.`;
+            setTimeout(() => {
+              location.href = "index.html"; // change destination as needed
+            }, 3000);
           }
         };
         container.appendChild(btn);
