@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ELA Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #eef; }
+    .question { margin-bottom: 15px; }
+    h3 { margin: 0 0 5px; }
+    button { margin-top: 10px; }
+    #quiz, #result, #backBtn { display: none; }
+    #exitBtn { float: right; font-size: 20px; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <a href="index.html" id="exitBtn">❌</a>
+  <h1>ELA Quiz (15 questions)</h1>
+  <div id="quiz"></div>
+  <button onclick="submitQuiz()">Finish Quiz</button>
+  <div id="result"></div>
+  <button onclick="location.href='index.html'" id="backBtn">Back to Index</button>
+
+  <script>
+    const allQuestions = [
+      { q: "Identify the subject in: 'The cat chased the mouse.'", a: "cat" },
+      { q: "Choose the correct homophone: 'I’ll read the _____ of the story.' (tail/tale)", a: "tale" },
+      { q: "Which word is a synonym of 'quick'?", a: "fast" },
+      { q: "What’s the antonym of 'generous'?", a: "selfish" },
+      { q: "Choose the proper noun: 'I met Sarah at the store.'", a: "Sarah" },
+      { q: "Select the adjective: 'The bright sun warmed the sky.'", a: "bright" },
+      { q: "What's the past tense of 'run'?", a: "ran" },
+      { q: "Complete the simile: 'As busy as a _____.'", a: "bee" },
+      { q: "Which word is an interjection? 'Wow! That’s amazing.'", a: "Wow" },
+      { q: "Turn this into a question: 'He went to the park.'", a: "Did he go to the park?" },
+      { q: "What punctuation ends a question?", a: "?" },
+      { q: "Choose the correct spelling: 'recieve' or 'receive'?", a: "receive" },
+      { q: "Identify the verb: 'She dances beautifully.'", a: "dances" },
+      { q: "What’s the plural of 'mouse'?", a: "mice" },
+      { q: "Complete the analogy: 'Book is to read as fork is to _____.'", a: "eat" }
+    ];
+
+    const selected = allQuestions
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 15);
+
+    const quizDiv = document.getElementById("quiz");
+
+    selected.forEach((q, idx) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "question";
+      wrapper.innerHTML = `
+        <h3>${idx + 1}. ${q.q}</h3>
+        <input type="text" id="answer${idx}" />
+      `;
+      quizDiv.appendChild(wrapper);
+    });
+
+    quizDiv.style.display = "block";
+
+    function submitQuiz() {
+      let score = 0;
+      selected.forEach((q, idx) => {
+        const userAnswer = document.getElementById(`answer${idx}`).value.trim().toLowerCase();
+        if (userAnswer === q.a.toLowerCase()) score++;
+      });
+
+      document.getElementById("quiz").style.display = "none";
+      document.getElementById("result").innerHTML = `<h2>You got ${score}/15 correct!</h2>`;
+      document.getElementById("result").style.display = "block";
+      document.getElementById("backBtn").style.display = "inline";
+    }
+  </script>
+</body>
+</html>
