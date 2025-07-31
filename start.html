@@ -2,73 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ELA Quiz</title>
+  <title>50 Question Quiz</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #eef; }
-    .question { margin-bottom: 15px; }
-    h3 { margin: 0 0 5px; }
-    button { margin-top: 10px; }
-    #quiz, #result, #backBtn { display: none; }
-    #exitBtn { float: right; font-size: 20px; text-decoration: none; }
+    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+    #question { font-size: 1.5em; margin-bottom: 20px; }
+    .option { display: block; margin: 10px 0; padding: 10px; font-size: 1em; cursor: pointer; background-color: #f0f0f0; border: none; }
+    #nextBtn { padding: 10px 20px; font-size: 1em; margin-top: 20px; }
+    #score { font-size: 1.2em; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <a href="index.html" id="exitBtn">❌</a>
-  <h1>ELA Quiz (15 questions)</h1>
-  <div id="quiz"></div>
-  <button onclick="submitQuiz()">Finish Quiz</button>
-  <div id="result"></div>
-  <button onclick="location.href='index.html'" id="backBtn">Back to Index</button>
+  <h1>Quiz Challenge</h1>
+  <div id="question">Loading question...</div>
+  <div id="options"></div>
+  <button id="nextBtn" disabled>Next Question</button>
+  <div id="score">Score: 0</div>
 
   <script>
-    const allQuestions = [
-      { q: "Identify the subject in: 'The cat chased the mouse.'", a: "cat" },
-      { q: "Choose the correct homophone: 'I’ll read the _____ of the story.' (tail/tale)", a: "tale" },
-      { q: "Which word is a synonym of 'quick'?", a: "fast" },
-      { q: "What’s the antonym of 'generous'?", a: "selfish" },
-      { q: "Choose the proper noun: 'I met Sarah at the store.'", a: "Sarah" },
-      { q: "Select the adjective: 'The bright sun warmed the sky.'", a: "bright" },
-      { q: "What's the past tense of 'run'?", a: "ran" },
-      { q: "Complete the simile: 'As busy as a _____.'", a: "bee" },
-      { q: "Which word is an interjection? 'Wow! That’s amazing.'", a: "Wow" },
-      { q: "Turn this into a question: 'He went to the park.'", a: "Did he go to the park?" },
-      { q: "What punctuation ends a question?", a: "?" },
-      { q: "Choose the correct spelling: 'recieve' or 'receive'?", a: "receive" },
-      { q: "Identify the verb: 'She dances beautifully.'", a: "dances" },
-      { q: "What’s the plural of 'mouse'?", a: "mice" },
-      { q: "Complete the analogy: 'Book is to read as fork is to _____.'", a: "eat" }
+    const questions = [
+      {
+        question: "What is the capital of France?",
+        choices: ["Berlin", "Paris", "Madrid", "Rome"],
+        answer: "Paris"
+      },
+      {
+        question: "Who wrote 'Romeo and Juliet'?",
+        choices: ["William Shakespeare", "Mark Twain", "Jane Austen", "Charles Dickens"],
+        answer: "William Shakespeare"
+      },
+      {
+        question: "What’s the smallest planet in our solar system?",
+        choices: ["Mercury", "Venus", "Mars", "Earth"],
+        answer: "Mercury"
+      },
+      {
+        question: "How many continents are there?",
+        choices: ["5", "6", "7", "8"],
+        answer: "7"
+      },
+      {
+        question: "What element does 'O' represent on the periodic table?",
+        choices: ["Osmium", "Oxygen", "Gold", "Iron"],
+        answer: "Oxygen"
+      }
+      // ➕ You can add more questions following this format!
     ];
 
-    const selected = allQuestions
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 15);
+    let remaining = [...questions];
+    let score = 0;
 
-    const quizDiv = document.getElementById("quiz");
+    function loadQuestion() {
+      document.getElementById("nextBtn").disabled = true;
+      document.getElementById("options").innerHTML = "";
 
-    selected.forEach((q, idx) => {
-      const wrapper = document.createElement("div");
-      wrapper.className = "question";
-      wrapper.innerHTML = `
-        <h3>${idx + 1}. ${q.q}</h3>
-        <input type="text" id="answer${idx}" />
-      `;
-      quizDiv.appendChild(wrapper);
-    });
+      if (remaining.length === 0) {
+        document.getElementById("question").textContent = "Quiz Complete!";
+        document.getElementById("score").textContent = `Final Score: ${score}`;
+        return;
+      }
 
-    quizDiv.style.display = "block";
+      const index = Math.floor(Math.random() * remaining.length);
+      const current = remaining.splice(index, 1)[0];
+      document.getElementById("question").textContent = current.question;
 
-    function submitQuiz() {
-      let score = 0;
-      selected.forEach((q, idx) => {
-        const userAnswer = document.getElementById(`answer${idx}`).value.trim().toLowerCase();
-        if (userAnswer === q.a.toLowerCase()) score++;
+      current.choices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.className = "option";
+        btn.textContent = choice;
+        btn.onclick = () => {
+          if (choice === current.answer) score++;
+          document.getElementById("score").textContent = `Score: ${score}`;
+          document.querySelectorAll(".option").forEach(b => b.disabled = true);
+          document.getElementById("nextBtn").disabled = false;
+        };
+        document.getElementById("options").appendChild(btn);
       });
-
-      document.getElementById("quiz").style.display = "none";
-      document.getElementById("result").innerHTML = `<h2>You got ${score}/15 correct!</h2>`;
-      document.getElementById("result").style.display = "block";
-      document.getElementById("backBtn").style.display = "inline";
     }
+
+    document.getElementById("nextBtn").addEventListener("click", loadQuestion);
+    loadQuestion(); // Load first question
   </script>
 </body>
 </html>
